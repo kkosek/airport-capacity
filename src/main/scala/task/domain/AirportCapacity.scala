@@ -8,4 +8,4 @@ case class FlightsDepartured(number: Int) extends AnyVal
 
 case class Time(time: LocalTime, zone: ZoneId)
 
-case class AirportCapacity(id: AirportId, time: Time, arrived: FlightsArrived, departured: FlightsDepartured)
+case class AirportCapacity(id: String, time: String, arrived: Int, departured: Int)
