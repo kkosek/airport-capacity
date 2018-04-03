@@ -1,12 +1,11 @@
 package task.main
 
 import akka.actor.ActorSystem
-import akka.stream.{ActorMaterializer, Materializer}
 import akka.event.Logging
+import akka.stream.{ActorMaterializer, Materializer}
 import com.outworkers.phantom.connectors.ContactPoint
 import com.typesafe.config.ConfigFactory
 import task.db.{AppDatabase, DbConfig}
-import task.domain.AirportCapacity
 
 import scala.concurrent.ExecutionContext
 
