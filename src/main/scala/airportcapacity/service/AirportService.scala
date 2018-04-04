@@ -9,7 +9,7 @@ case class AirportConfig(airportsIds: Seq[AirportId], filename: String)
 
 class AirportService(config: AirportConfig, logger: LoggingAdapter) {
   def getAirports(): Seq[Airport] = {
-    val lines = Source.fromResource(config.filename).getLines()
+    val lines = Source.fromResource(config.filename).getLines().toSeq
     config.airportsIds.flatMap(id => lines.find(_.contains("\"" + id.id + "\""))).flatMap(Airport(_))
   }
 }
