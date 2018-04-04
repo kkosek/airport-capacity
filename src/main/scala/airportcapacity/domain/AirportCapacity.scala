@@ -1,4 +1,4 @@
-package task.domain
+package airportcapacity.domain
 
 import java.time.{LocalTime, ZoneId}
 

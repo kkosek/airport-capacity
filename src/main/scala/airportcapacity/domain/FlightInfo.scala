@@ -1,4 +1,4 @@
-package task.domain
+package airportcapacity.domain
 
 case class FlightId(id: String) extends AnyVal
 

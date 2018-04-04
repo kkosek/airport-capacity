@@ -1,8 +1,8 @@
-package task.repository
+package airportcapacity.repository
 
 import com.outworkers.phantom.Table
 import com.outworkers.phantom.dsl._
-import task.domain.AirportCapacity
+import airportcapacity.domain.AirportCapacity
 
 abstract class AirportCapacities extends Table[AirportCapacities, AirportCapacity] {
   override def tableName: String = "airport_capacity"

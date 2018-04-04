@@ -1,7 +1,7 @@
-package task.db
+package airportcapacity.db
 
-import task.domain.AirportCapacity
-import task.repository.AirportCapacities
+import airportcapacity.domain.AirportCapacity
+import airportcapacity.repository.AirportCapacities
 import com.outworkers.phantom.connectors.CassandraConnection
 import com.outworkers.phantom.dsl._
 

@@ -1,7 +1,7 @@
-package task.service
+package airportcapacity.service
 
 import akka.event.LoggingAdapter
-import task.domain.{Airport, AirportId}
+import airportcapacity.domain.{Airport, AirportId}
 
 import scala.io.Source
 

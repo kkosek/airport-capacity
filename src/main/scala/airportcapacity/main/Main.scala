@@ -1,13 +1,13 @@
-package task.main
+package airportcapacity.main
 
 import akka.actor.ActorSystem
 import akka.event.Logging
 import akka.stream.{ActorMaterializer, Materializer}
 import com.outworkers.phantom.connectors.ContactPoint
 import com.typesafe.config.ConfigFactory
-import task.db.{AppDatabase, DbConfig}
-import task.domain.AirportId
-import task.service.{AirportConfig, AirportService}
+import airportcapacity.db.{AppDatabase, DbConfig}
+import airportcapacity.domain.AirportId
+import airportcapacity.service.{AirportConfig, AirportService, FlightInfoConfig, FlightInfoService}
 
 import scala.collection.JavaConverters._
 import scala.concurrent.ExecutionContext
@@ -22,6 +22,7 @@ trait Setup {
   lazy val logger = Logging(system, getClass)
   lazy val config = ConfigFactory.load()
   lazy val airportConfig = AirportConfig(config.getStringList("airport.ids").asScala.map(AirportId), config.getString("airport.file"))
+  lazy val flightInfoConfig = FlightInfoConfig(config.getString("flight-info.open-sky-url"))
 
   lazy val cassandraConfig = DbConfig(
     hostname                = config.getString("cassandra.hostname"),
@@ -35,6 +36,7 @@ trait Setup {
   lazy val connector = ContactPoint.apply(cassandraConfig.hostname, cassandraConfig.port).keySpace(cassandraConfig.keyspace)
   lazy val db: AppDatabase = wire[AppDatabase]
   lazy val airportService: AirportService = wire[AirportService]
+  lazy val flightInfoService: FlightInfoService = wire[FlightInfoService]
 
 }
 
@@ -43,4 +45,5 @@ object Main extends App with Setup {
   implicit val system = ActorSystem()
   implicit val executor = system.dispatcher
   implicit val materializer = ActorMaterializer()
+  airportService.getAirports().foreach(println)
 }

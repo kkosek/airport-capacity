@@ -1,4 +1,4 @@
-name := "akka-streams-task"
+name := "airport-capacity"
 version := "0.1"
 scalaVersion := "2.12.5"
 
