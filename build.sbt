@@ -5,11 +5,11 @@ scalaVersion := "2.12.5"
 scalacOptions := Seq("-target:jvm-1.8", "-unchecked", "-deprecation", "-feature", "-encoding", "utf8")
 
 libraryDependencies ++= {
-  val akkaV          = "2.4.19"
-  val akkaHttpV      = "10.0.9"
-  val logbackV       = "1.2.3"
-  val macwireV       = "2.3.0"
-  val phantomV = "2.14.5"
+  val akkaV     = "2.5.11"
+  val akkaHttpV = "10.1.0"
+  val logbackV  = "1.2.3"
+  val macwireV  = "2.3.0"
+  val phantomV  = "2.14.5"
 
   Seq("com.typesafe.akka"        %% "akka-actor"           % akkaV,
       "com.typesafe.akka"        %% "akka-slf4j"           % akkaV,

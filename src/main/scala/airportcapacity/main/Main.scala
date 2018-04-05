@@ -10,7 +10,8 @@ import airportcapacity.domain.AirportId
 import airportcapacity.service.{AirportConfig, AirportService, FlightInfoConfig, FlightInfoService}
 
 import scala.collection.JavaConverters._
-import scala.concurrent.ExecutionContext
+import scala.concurrent.duration.Duration
+import scala.concurrent.{Await, ExecutionContext}
 
 trait Setup {
   import com.softwaremill.macwire._
@@ -19,31 +20,30 @@ trait Setup {
   implicit val executor: ExecutionContext
   implicit val materializer: Materializer
 
-  lazy val logger = Logging(system, getClass)
-  lazy val config = ConfigFactory.load()
-  lazy val airportConfig = AirportConfig(config.getStringList("airport.ids").asScala.map(AirportId), config.getString("airport.file"))
+  lazy val logger           = Logging(system, getClass)
+  lazy val config           = ConfigFactory.load()
+  lazy val airportConfig    = AirportConfig(config.getStringList("airport.ids").asScala.map(AirportId), config.getString("airport.file"))
   lazy val flightInfoConfig = FlightInfoConfig(config.getString("flight-info.open-sky-url"))
 
-  lazy val cassandraConfig = DbConfig(
-    hostname                = config.getString("cassandra.hostname"),
-    port                    = config.getInt("cassandra.port"),
-    replicationStrategy     = config.getString("cassandra.replication-strategy"),
-    replicationFactor       = config.getString("cassandra.replication-factor"),
-    defaultConsistencyLevel = config.getString("cassandra.default-consistency-level"),
-    keyspace                = config.getString("cassandra.keyspace")
-  )
+  lazy val cassandraConfig = DbConfig(hostname = config.getString("cassandra.hostname"),
+                                      port = config.getInt("cassandra.port"),
+                                      replicationStrategy = config.getString("cassandra.replication-strategy"),
+                                      replicationFactor = config.getString("cassandra.replication-factor"),
+                                      defaultConsistencyLevel = config.getString("cassandra.default-consistency-level"),
+                                      keyspace = config.getString("cassandra.keyspace"))
 
-  lazy val connector = ContactPoint.apply(cassandraConfig.hostname, cassandraConfig.port).keySpace(cassandraConfig.keyspace)
-  lazy val db: AppDatabase = wire[AppDatabase]
-  lazy val airportService: AirportService = wire[AirportService]
+  lazy val connector                            = ContactPoint.apply(cassandraConfig.hostname, cassandraConfig.port).keySpace(cassandraConfig.keyspace)
+  lazy val db: AppDatabase                      = wire[AppDatabase]
+  lazy val airportService: AirportService       = wire[AirportService]
   lazy val flightInfoService: FlightInfoService = wire[FlightInfoService]
 
 }
 
-
 object Main extends App with Setup {
-  implicit val system = ActorSystem()
-  implicit val executor = system.dispatcher
+  implicit val system       = ActorSystem()
+  implicit val executor     = system.dispatcher
   implicit val materializer = ActorMaterializer()
-  airportService.getAirports().foreach(println)
+  val data                  = flightInfoService.getStates()
+  val xd                    = Await.result(data, Duration.Inf)
+  println(xd)
 }

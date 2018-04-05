@@ -12,4 +12,3 @@ class AppDatabase(override val connector: CassandraConnection) extends Database[
 
   def insert(capacity: AirportCapacity): Future[ResultSet] = Batch.logged.add(AirportCapacities.store(capacity)).future()
 }
-
