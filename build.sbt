@@ -10,6 +10,7 @@ libraryDependencies ++= {
   val logbackV  = "1.2.3"
   val macwireV  = "2.3.0"
   val phantomV  = "2.14.5"
+  val enumeratumV = "1.5.12"
 
   Seq("com.typesafe.akka"        %% "akka-actor"           % akkaV,
       "com.typesafe.akka"        %% "akka-slf4j"           % akkaV,
@@ -19,8 +20,10 @@ libraryDependencies ++= {
       "com.typesafe.akka"        %% "akka-http"            % akkaHttpV,
       "com.typesafe.akka"        %% "akka-http-spray-json" % akkaHttpV,
       "com.typesafe.akka"        %% "akka-http-xml"        % akkaHttpV,
+      "com.typesafe.akka" %% "akka-stream-contrib" % "0.9",
       "com.outworkers"           %% "phantom-dsl"          % phantomV,
       "com.softwaremill.macwire" %% "macros"               % macwireV,
       "com.softwaremill.macwire" %% "util"                 % macwireV,
+    "com.beachape"             %% "enumeratum"                  % enumeratumV,
       "ch.qos.logback"           % "logback-classic"       % logbackV)
 }

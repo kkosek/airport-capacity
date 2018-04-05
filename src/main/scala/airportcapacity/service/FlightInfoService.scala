@@ -20,7 +20,7 @@ case class OpenSkyData(time: Int, states: List[FlightInfo])
 
 class FlightInfoService(logger: LoggingAdapter, config: FlightInfoConfig)(implicit ec: ExecutionContext, mat: Materializer, system: ActorSystem) {
   import airportcapacity.http.AirportCapacityJsonFormats._
-  def getStates(): Future[Seq[FlightInfo]] = {
+  def getStates(str: String): Future[Seq[FlightInfo]] = {
     println(s"Getting states at ${ZonedDateTime.now()}")
     Http().singleRequest(HttpRequest(method = HttpMethods.GET, uri = config.openSkyURL)).flatMap { response =>
       response.entity.toStrict(5.seconds).flatMap { entity =>

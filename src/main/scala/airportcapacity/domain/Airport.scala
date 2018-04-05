@@ -4,7 +4,10 @@ import airportcapacity.utils.StringExtensions._
 
 case class AirportId(id: String)
 
-case class Position(long: Double, lat: Double)
+//0.01 is ~1km
+case class Position(long: Double, lat: Double) {
+  def isNear(other: Position) = long - other.long < 0.01 && lat - other.lat < 0.01
+}
 
 object Position {
   def apply(long: String, lat: String): Position = Position(long.removeDoubleQuotesIfExist.toDouble, lat.removeDoubleQuotesIfExist.toDouble)

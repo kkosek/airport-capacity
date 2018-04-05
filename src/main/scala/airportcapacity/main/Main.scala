@@ -12,6 +12,8 @@ import airportcapacity.service.{AirportConfig, AirportService, FlightInfoConfig,
 import scala.collection.JavaConverters._
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, ExecutionContext}
+import airportcapacity.service.AggregatorService
+import akka.stream.scaladsl.Sink
 
 trait Setup {
   import com.softwaremill.macwire._
@@ -36,6 +38,7 @@ trait Setup {
   lazy val db: AppDatabase                      = wire[AppDatabase]
   lazy val airportService: AirportService       = wire[AirportService]
   lazy val flightInfoService: FlightInfoService = wire[FlightInfoService]
+  lazy val aggregatorService: AggregatorService = wire[AggregatorService]
 
 }
 
@@ -43,7 +46,5 @@ object Main extends App with Setup {
   implicit val system       = ActorSystem()
   implicit val executor     = system.dispatcher
   implicit val materializer = ActorMaterializer()
-  val data                  = flightInfoService.getStates()
-  val xd                    = Await.result(data, Duration.Inf)
-  println(xd)
+  aggregatorService.src.runWith(aggregatorService.sink)
 }
