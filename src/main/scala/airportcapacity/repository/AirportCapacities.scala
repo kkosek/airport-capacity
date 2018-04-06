@@ -4,13 +4,14 @@ import com.outworkers.phantom.Table
 import com.outworkers.phantom.dsl._
 import airportcapacity.domain.AirportCapacity
 
-abstract class AirportCapacities extends Table[AirportCapacities, AirportCapacity] {
+abstract class AirportCapacities
+    extends Table[AirportCapacities, AirportCapacity] {
   override def tableName: String = "airport_capacity"
 
   object airportId extends StringColumn with PartitionKey {
     override lazy val name = "airport_id"
   }
-  object hour       extends StringColumn with ClusteringOrder
-  object arrived    extends IntColumn
+  object hour extends StringColumn with ClusteringOrder
+  object arrived extends IntColumn
   object departured extends IntColumn
 }

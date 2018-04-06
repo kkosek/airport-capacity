@@ -9,9 +9,31 @@ trait AirportCapacityJsonProtocol extends DefaultJsonProtocol {
     override def write(obj: FlightInfo): JsValue = ???
     override def read(json: JsValue): FlightInfo = {
       json match {
-        case JsArray(Vector(JsString(id), _, _, _, _, JsNumber(long), JsNumber(lat), _, JsBoolean(onGround), _*)) =>
-          FlightInfo(id, Option(Position(long.toDouble, lat.toDouble)), onGround)
-        case JsArray(Vector(JsString(id), _, _, _, _, _, _, _, JsBoolean(onGround), _*)) =>
+        case JsArray(
+            Vector(JsString(id),
+                   _,
+                   _,
+                   _,
+                   _,
+                   JsNumber(long),
+                   JsNumber(lat),
+                   _,
+                   JsBoolean(onGround),
+                   _*)) =>
+          FlightInfo(id,
+                     Option(Position(long.toDouble, lat.toDouble)),
+                     onGround)
+        case JsArray(
+            Vector(JsString(id),
+                   _,
+                   _,
+                   _,
+                   _,
+                   _,
+                   _,
+                   _,
+                   JsBoolean(onGround),
+                   _*)) =>
           FlightInfo(id, None, onGround)
         case _ =>
           deserializationError(s"Couldn't parse state json array: $json")
