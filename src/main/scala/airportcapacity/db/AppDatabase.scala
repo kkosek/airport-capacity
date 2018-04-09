@@ -7,8 +7,7 @@ import com.outworkers.phantom.dsl._
 
 import scala.concurrent.Future
 
-class AppDatabase(override val connector: CassandraConnection)
-    extends Database[AppDatabase](connector) {
+class AppDatabase(override val connector: CassandraConnection) extends Database[AppDatabase](connector) {
   object AirportCapacities extends AirportCapacities with connector.Connector
 
   def insert(capacity: AirportCapacity): Future[ResultSet] =

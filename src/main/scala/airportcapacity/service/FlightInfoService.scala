@@ -18,16 +18,12 @@ case class FlightInfoConfig(openSkyURL: String) extends AnyVal
 
 case class OpenSkyData(time: Int, states: List[FlightInfo])
 
-class FlightInfoService(logger: LoggingAdapter, config: FlightInfoConfig)(
-    implicit ec: ExecutionContext,
-    mat: Materializer,
-    system: ActorSystem) {
+class FlightInfoService(logger: LoggingAdapter, config: FlightInfoConfig)(implicit ec: ExecutionContext, mat: Materializer, system: ActorSystem) {
   import airportcapacity.http.AirportCapacityJsonFormats._
   def getStates(str: String): Future[Seq[FlightInfo]] = {
-    println(s"Getting states at ${ZonedDateTime.now()}")
+    logger.debug("Getting states at ${ZonedDateTime.now()}")
     Http()
-      .singleRequest(
-        HttpRequest(method = HttpMethods.GET, uri = config.openSkyURL))
+      .singleRequest(HttpRequest(method = HttpMethods.GET, uri = config.openSkyURL))
       .flatMap { response =>
         response.entity.toStrict(5.seconds).flatMap { entity =>
           Unmarshal(entity).to[OpenSkyData].map(_.states)
